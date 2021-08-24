@@ -10,8 +10,8 @@ import imagej
 from scipy.spatial.distance import pdist
 
 
-def extact_labels(IMAGEJ_dir, src_dir, dest_dir, labels_dir, part_number):
-    ij = imagej.init(IMAGEJ_dir,headless=False)
+def extact_labels(IMAGEJ_dir, src_dir, dest_dir, labels_dir):
+    ij = imagej.init(IMAGEJ_dir)
     tif_paths = []
     listOfFiles = os.listdir(src_dir)
     pattern = "*.tif"
@@ -102,3 +102,5 @@ def compute_indicators_porosity_level(df, vol_layer):
 # df, filename  = load_labels_file(part_number, labels_dir)
 # df =  clean_labels_file(df)
 # df.to_csv(labels_dir +"/"+filename)
+
+extact_labels('/home/spi-2019-34/Téléchargements/Fiji.app', '/home/spi-2019-34/testing/TTT', '/home/spi-2019-34/testing/TTT/out', '/home/spi-2019-34/testing/TTT/labels')
