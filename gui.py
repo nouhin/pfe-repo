@@ -27,6 +27,9 @@ class App(Tk):
         self.dest_dir = ""
         self.labels_dir = ""
 
+        self.template_dir = ""
+        self.img_dir = ""
+
         self.frames = {}
 
         for F in (StartWindow, LabelingPage, AnalysePage, SegmentationPage, RegistrationPage):
@@ -57,6 +60,12 @@ class App(Tk):
         self.src_dir = filedialog.askdirectory( title = "Choose Raw Tomography images Directory ...")
         self.dest_dir = filedialog.askdirectory( title = "Choose Destination Directory for processed images...")
         self.labels_dir = filedialog.askdirectory( title = "Choose Destination Directory for Labeled images...")
+
+    def getFile(self):
+        self.template_dir = filedialog.askopenfilename(title="Choose a template")
+        self.img_dir = filedialog.askopenfilename(title="Choose a file")
+
+
 
 class StartWindow(Frame):
     def __init__(self, parent, controller):
@@ -121,9 +130,15 @@ class RegistrationPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         label = Label(self, fg="#000000", text="Registration Page", font=FONT)
-        label.pack(pady=10, padx=10)       
-        label_button = ttk.Button(self, text="Back Home", command=lambda: controller.show_frame(StartWindow))
-        label_button.pack()
+        label.pack(pady=10, padx=10)
+        label_button_41 = ttk.Button(self, text="Browse", command=lambda: controller.getFile())
+        label_button_41.pack()
+        label_button_42 = ttk.Button(self, text="Find Angle",  command=lambda: find_angle(controller.template_dir, controller.img_dir))
+        label_button_42.pack()
+        label_button_42 = ttk.Button(self, text="Rotate stack", command=lambda: controller.show_frame(StartWindow))
+        label_button_42.pack()          
+        label_button_43 = ttk.Button(self, text="Back Home", command=lambda: controller.show_frame(StartWindow))
+        label_button_43.pack()
 
 app = App()
 app.mainloop()
