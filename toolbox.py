@@ -9,9 +9,37 @@ import tifffile as tifio
 import imagej
 from scipy.spatial.distance import pdist
 
+def find_angle(template_dir, img_dir):
+    template = cv.imread(template_dir)
+    template = cv.cvtColor(template, cv.COLOR_BGR2GRAY)
+    _, template = cv.threshold(template, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
+    (tH, tW) = template.shape[:2]
+
+    image = cv.imread(img_dir)
+    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    _, gray_th = cv.threshold(gray, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
+
+    for angle in np.arange(0, 360, 1):
+        rotated = imutils.rotate(gray_th, angle)
+        result = cv.matchTemplate(template, rotated, cv.TM_CCOEFF_NORMED)
+        threshold = 0.70
+        loc = np.where(result >= threshold)
+        a = len(list(zip(*loc[::-1])))
+        if a > 0:
+            print("match found")
+            print("found correct angle : ", angle)
+            (_, maxVal, _, maxLoc) = cv.minMaxLoc(result)
+            clone = np.dstack([rotated, rotated, rotated])
+            cv.rectangle(clone, (maxLoc[0], maxLoc[1]), (maxLoc[0] + tW, maxLoc[1] + tH), (0, 0, 255), 2)
+            cv.imshow("Visualize", clone)
+            cv.waitKey(0)
+            break
+        if a == 0:
+            print("testing diffrent angle : ", angle)
+
 
 def extact_labels(IMAGEJ_dir, src_dir, dest_dir, labels_dir):
-    ij = imagej.init(IMAGEJ_dir)
+    ij = imagej.init(IMAGEJ_dir, headless=False)
     tif_paths = []
     listOfFiles = os.listdir(src_dir)
     pattern = "*.tif"
@@ -103,4 +131,10 @@ def compute_indicators_porosity_level(df, vol_layer):
 # df =  clean_labels_file(df)
 # df.to_csv(labels_dir +"/"+filename)
 
-extact_labels('/home/spi-2019-34/Téléchargements/Fiji.app', '/home/spi-2019-34/testing/TTT', '/home/spi-2019-34/testing/TTT/out', '/home/spi-2019-34/testing/TTT/labels')
+#extact_labels('/home/spi-2019-34/Téléchargements/Fiji.app', '/home/spi-2019-34/pfe-repo', '/home/spi-2019-34/pfe-repo/dest_data', '/home/spi-2019-34/pfe-repo/labels_data')
+
+
+# df = pd.read_csv("/home/spi-2019-34/pfe-repo/sample1_label.dat", delimiter=" ")
+# df = clean_labels_file(df)
+
+# df.to_csv("cleaned_labels.csv")
