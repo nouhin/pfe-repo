@@ -73,12 +73,6 @@ def label(IMAGEJ_PATH, IN_DIR, OUT_DIR, TOMO_LABELS_PATH, file_number):
         ij.py.run_plugin(plugin,args)
 
         ij.dispose()
-    
-    df, filename  = load_tomo_data(file_number, TOMO_LABELS_PATH)
-    df = clean_tomo_data(df)
-    df.to_csv(TOMO_LABELS_PATH +"/"+filename)
-
-    return df
 
 def dist(df):
     return sum(pdist(df.values, 'euclid'))
