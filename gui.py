@@ -1,7 +1,5 @@
-from pathlib import Path
-from tkinter import *
-from tkinter import ttk, filedialog
 from toolbox import *
+from PIL import ImageTk, Image
 
 FONT = ("Verdana", 12)
 OUTPUT_PATH = Path(__file__).parent
@@ -10,10 +8,14 @@ ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+image_afh = Image.open("assets/afh.png")
+image_ensam = Image.open("assets/ensam.png")
+image_pimm = Image.open("assets/pimm.png")
+
 class App(Tk):
     def __init__(self, *args, **kwargs):
         Tk.__init__(self,*args, **kwargs)
-        # self.geometry("500x500")
+        self.geometry("600x500")
         self.wm_title("Numerical Tool for Defect Caracterisation")
         self.configure(bg = "#333333")
         
@@ -22,13 +24,21 @@ class App(Tk):
         mainframe.grid_rowconfigure(0, weight=1)
         mainframe.grid_columnconfigure(0, weight=1)
 
+        self.afh = ImageTk.PhotoImage(image_afh)
+        self.ensam = ImageTk.PhotoImage(image_ensam)
+        self.pimm = ImageTk.PhotoImage(image_pimm)
+
+
         self.IMAGEJ_dir = ""
         self.src_dir = ""
         self.dest_dir = ""
         self.labels_dir = ""
+        self.csv_file_dir = ""
 
         self.template_dir = ""
         self.img_dir = ""
+        self.raw_tif_dir = ""
+
 
         self.frames = {}
 
@@ -36,6 +46,7 @@ class App(Tk):
             frame = F(mainframe, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
+            frame.config(bg="#333333")
 
         # canvas = Canvas(self, bg = "#333333", height = 750, width = 1100, bd = 0, highlightthickness = 0, relief = "ridge")
         # canvas.place(x = 0, y = 0)
@@ -64,27 +75,38 @@ class App(Tk):
     def getFile(self):
         self.template_dir = filedialog.askopenfilename(title="Choose a template")
         self.img_dir = filedialog.askopenfilename(title="Choose a file")
+        self.raw_tif_dir = filedialog.askopenfilename(title="Choose a file")
+        self.src_dir = filedialog.askdirectory( title = "Choose Raw Tomography images Directory ...")
 
-
+    def getCsv(self):
+        self.csv_file_dir = filedialog.askopenfilename(title="Choose a csv file")
 
 class StartWindow(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
+        label_image_afh = Label(self, image=controller.afh)
+        label_image_afh.grid(sticky='NE')
+        label_image_ensam = Label(self, image=controller.ensam)
+        label_image_ensam.grid(sticky='NE')
+        label_image_pimm = Label(self, image=controller.pimm)
+        label_image_pimm.grid(sticky='NE')
+
+
         label = Label(self, fg="#000000", text="Start Window", font=FONT)
-        label.pack(pady=10, padx=10)
+        label.grid(sticky='N')
 
         label_button = ttk.Button(self, text="Extract Labels", command=lambda: controller.show_frame(LabelingPage))
-        label_button.pack()
+        label_button.grid(row=2, column=0)
 
         analyse_button = ttk.Button(self, text="Quantify Pores", command=lambda: controller.show_frame(AnalysePage))
-        analyse_button.pack()
+        analyse_button.grid(row=3, column=0)
 
         segmentation_button = ttk.Button(self, text="Segment 3D", command=lambda: controller.show_frame(SegmentationPage))
-        segmentation_button.pack()
+        segmentation_button.grid(row=4, column=0)
 
         registration_button = ttk.Button(self, text="Visualize", command=lambda: controller.show_frame(RegistrationPage))
-        registration_button.pack()
+        registration_button.grid(row=5, column=0)
 
 class LabelingPage(Frame):
     def __init__(self, parent, controller):
@@ -107,16 +129,30 @@ class LabelingPage(Frame):
         label_button = ttk.Button(self, text="Back Home", command=lambda: controller.show_frame(StartWindow))
         label_button.pack()
 
+        def resizeFrame(self, y, x):
+            self.parent.geometry('{}x{}'.format(y, x))    
+
 class AnalysePage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         label = Label(self, fg="#000000", text="Analyse Page", font=FONT)
-        label.pack(pady=10, padx=10)       
-        label_button = ttk.Button(self, text="Back Home", command=lambda: controller.show_frame(StartWindow))
-        label_button.pack()
+        label.grid(sticky=N)    
 
-        save_button_2 = ttk.Button(self, text="save", command=lambda: controller.show_frame(StartWindow))
-        save_button_2.pack()
+        self.vol_layer = 8691600.00
+
+        self.df =  pd.DataFrame()
+        self.table = pt = Table(self, dataframe=self.df, showtoolbar=True, showstatusbar=True)
+        pt.show()
+        
+        label_button_21 = ttk.Button(self, text="Browse", command=lambda: controller.getCsv())
+        label_button_21.grid(sticky=SW)   
+        label_button_22 = ttk.Button(self, text="Clean", command=lambda: controller.show_frame(StartWindow))
+        label_button_22.grid(sticky=S) 
+        label_button_23 = ttk.Button(self, text="Compute", command=lambda: controller.show_frame(StartWindow))
+        label_button_23.grid(sticky=SE) 
+
+        save_button_2 = ttk.Button(self, text="Back Home", command=lambda: controller.show_frame(StartWindow))
+        save_button_2.grid(row=3, column=2) 
 
 class SegmentationPage(Frame):
     def __init__(self, parent, controller):
@@ -129,16 +165,27 @@ class SegmentationPage(Frame):
 class RegistrationPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
-        label = Label(self, fg="#000000", text="Registration Page", font=FONT)
-        label.pack(pady=10, padx=10)
+        label_41 = Label(self, fg="#000000", text="Registration Page", font=FONT)
+        label_41.pack(pady=10, padx=10)
+
+        label_42 = Label(self, text="Output message")
+        label_42.pack()
+
+        self.angle = 0
+
+        f = Figure()
+    
         label_button_41 = ttk.Button(self, text="Browse", command=lambda: controller.getFile())
         label_button_41.pack()
-        label_button_42 = ttk.Button(self, text="Find Angle",  command=lambda: find_angle(controller.template_dir, controller.img_dir))
+        label_button_42 = ttk.Button(self, text="Find Angle",  command=lambda: find_angle(controller.template_dir, controller.img_dir, f, self, label_42))
         label_button_42.pack()
-        label_button_42 = ttk.Button(self, text="Rotate stack", command=lambda: controller.show_frame(StartWindow))
+        label_button_42 = ttk.Button(self, text="Rotate stack", command=lambda: rotate_stack(controller.raw_tif_dir, controller.src_dir, self.angle, label_42))
         label_button_42.pack()          
         label_button_43 = ttk.Button(self, text="Back Home", command=lambda: controller.show_frame(StartWindow))
-        label_button_43.pack()
+        label_button_43.pack
+        
+
+        f = Figure()
 
 app = App()
 app.mainloop()
