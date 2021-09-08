@@ -10,12 +10,11 @@ from scipy.spatial.distance import pdist
 import re
 
 # Load raw labels
-def load_tomo_data(file_number, TOMO_LABELS_PATH):
-    filename = re.match(file_number)
-    csv_path = os.path.join(TOMO_LABELS_PATH, filename)
-    df = pd.read_csv(csv_path, delimiter=" ")
-    filename = os.path.splitext(filename)[0]
-    return df, filename
+def load_tomo_data(file):
+    # filename = re.match(file_number)
+    # csv_path = os.path.join(TOMO_LABELS_PATH, filename)
+    df = pd.read_csv(file, delimiter=" ")
+    return df
 
 # Clean raw labels
 def clean_tomo_data(df):
@@ -24,7 +23,7 @@ def clean_tomo_data(df):
   df = df[ df["volpix"] != df["volpix"].max()]
   return df
 
-def label(IMAGEJ_PATH, IN_DIR, OUT_DIR, TOMO_LABELS_PATH, file_number):
+def label(IMAGEJ_PATH, IN_DIR, OUT_DIR, TOMO_LABELS_PATH):
     ij = imagej.init(IMAGEJ_PATH,headless=False)
     tif_paths = []
     listOfFiles = os.listdir(IN_DIR)
@@ -68,7 +67,7 @@ def label(IMAGEJ_PATH, IN_DIR, OUT_DIR, TOMO_LABELS_PATH, file_number):
         tif = os.path.splitext(tif)[0]
         plugin = 'Parameters'
         args =  {
-            'save' : '/'+ TOMO_LABELS_PATH + "Labels_" +tif+ ".dat"
+            'save' : '/'+ TOMO_LABELS_PATH + "/Labels_" +tif+ ".dat"
         }
         ij.py.run_plugin(plugin,args)
 

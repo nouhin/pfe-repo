@@ -1,0 +1,9 @@
+**/__pycache__
+**/model/3D_model_vgg16_100epochs_1.h5
+**/demo/segmented_multi_channel.ome.tiff
+cleaned_labels.csv
+sample_image.tif
+demo/segmented.tif
+.gitignore
+labels_data/Labels_sample_processed_1.dat
+dest_data/sample_processed_1.tif

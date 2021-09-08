@@ -1,4 +1,4 @@
-from toolbox import *
+from toolbox_gui import *
 from PIL import ImageTk, Image
 
 FONT = ("Verdana", 12)
