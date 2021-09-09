@@ -7,3 +7,15 @@ demo/segmented.tif
 .gitignore
 labels_data/Labels_sample_processed_1.dat
 dest_data/sample_processed_1.tif
+labels_data/res_filterParamters.dat
+labels_data/output.xlsx
+labels_data/Labels_265x265x265_image_processed_1.dat
+labels_data/res_filtered.dat
+.gitignore
+.gitignore
+dest_data/265x265x265_image_processed_1.tif
+265x265x265_image.tif
+labels_data/Filtered stack.tif
+.gitignore
+.gitignore
+labels_data/res.dat
