@@ -30,6 +30,7 @@ def load_tomo_data(file):
 def clean_tomo_data(df):
     """Function to select and sort relevant data from the output of porosity
     detection plugin.
+    
     The data in question are (x,y,z) coordinates of defect center of mass, defect
     volume and sphericity factor.
 
@@ -48,7 +49,8 @@ def clean_tomo_data(df):
 def label(IMAGEJ_PATH, IN_DIR, OUT_DIR, TOMO_LABELS_PATH):
     """Script Function to automate the labeling process using ImageJ plugin.
     It takes in the paths of local ImageJ installation which must include the plugin
-    and of input data in form of Tiff image stack.
+    and of input data in form of Tif image stack.
+    
     The user must also specify the paths for the output which includes processed
     images and defect data in form of csv.
 
@@ -117,9 +119,13 @@ def dist(df):
 def compute_indicators_porosity_level(df, vol_layer):
     """Function to compute a porosity severity score based on the four metrics :
 
+
     1 - Frequency of occurrence or number of discrete pores in a layer.
+    
     2 - The proportion of volume in a layer affected by porosity mu2.
+    
     3 - The average distance between a pair of pores mu3.
+    
     4 - The above three metrics are combined into a single metric called the
     normalized porosity level μ.
 
@@ -128,7 +134,8 @@ def compute_indicators_porosity_level(df, vol_layer):
         vol_layer (float): The volume of part layer.
 
     Returns:
-        Dataframe : Pandas dataframe containing the four mu values for each porosity.
+        Dataframe : Pandas dataframe containing the four mu values for each
+        porosity.
 
     """
     # occurrence frequency

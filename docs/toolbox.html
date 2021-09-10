@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.8.1" />
-<title>toolbox module documentation</title>
+<title>toolbox API documentation</title>
 <meta name="description" content="" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
@@ -56,6 +56,7 @@ def load_tomo_data(file):
 def clean_tomo_data(df):
     &#34;&#34;&#34;Function to select and sort relevant data from the output of porosity
     detection plugin.
+    
     The data in question are (x,y,z) coordinates of defect center of mass, defect
     volume and sphericity factor.
 
@@ -74,7 +75,8 @@ def clean_tomo_data(df):
 def label(IMAGEJ_PATH, IN_DIR, OUT_DIR, TOMO_LABELS_PATH):
     &#34;&#34;&#34;Script Function to automate the labeling process using ImageJ plugin.
     It takes in the paths of local ImageJ installation which must include the plugin
-    and of input data in form of Tiff image stack.
+    and of input data in form of Tif image stack.
+    
     The user must also specify the paths for the output which includes processed
     images and defect data in form of csv.
 
@@ -143,9 +145,13 @@ def dist(df):
 def compute_indicators_porosity_level(df, vol_layer):
     &#34;&#34;&#34;Function to compute a porosity severity score based on the four metrics :
 
+
     1 - Frequency of occurrence or number of discrete pores in a layer.
+    
     2 - The proportion of volume in a layer affected by porosity mu2.
+    
     3 - The average distance between a pair of pores mu3.
+    
     4 - The above three metrics are combined into a single metric called the
     normalized porosity level μ.
 
@@ -154,7 +160,8 @@ def compute_indicators_porosity_level(df, vol_layer):
         vol_layer (float): The volume of part layer.
 
     Returns:
-        Dataframe : Pandas dataframe containing the four mu values for each porosity.
+        Dataframe : Pandas dataframe containing the four mu values for each
+        porosity.
 
     &#34;&#34;&#34;
     # occurrence frequency
@@ -199,8 +206,8 @@ def compute_indicators_porosity_level(df, vol_layer):
 </code></dt>
 <dd>
 <div class="desc"><p>Function to select and sort relevant data from the output of porosity
-detection plugin.
-The data in question are (x,y,z) coordinates of defect center of mass, defect
+detection plugin.</p>
+<p>The data in question are (x,y,z) coordinates of defect center of mass, defect
 volume and sphericity factor.</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -219,6 +226,7 @@ volume and sphericity factor.</p>
 <pre><code class="python">def clean_tomo_data(df):
     &#34;&#34;&#34;Function to select and sort relevant data from the output of porosity
     detection plugin.
+    
     The data in question are (x,y,z) coordinates of defect center of mass, defect
     volume and sphericity factor.
 
@@ -239,10 +247,10 @@ volume and sphericity factor.</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Function to compute a porosity severity score based on the four metrics :</p>
-<p>1 - Frequency of occurrence or number of discrete pores in a layer.
-2 - The proportion of volume in a layer affected by porosity mu2.
-3 - The average distance between a pair of pores mu3.
-4 - The above three metrics are combined into a single metric called the
+<p>1 - Frequency of occurrence or number of discrete pores in a layer.</p>
+<p>2 - The proportion of volume in a layer affected by porosity mu2.</p>
+<p>3 - The average distance between a pair of pores mu3.</p>
+<p>4 - The above three metrics are combined into a single metric called the
 normalized porosity level μ.</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -254,8 +262,9 @@ normalized porosity level μ.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Dataframe </code></dt>
-<dd>Pandas dataframe containing the four mu values for each porosity.</dd>
-</dl></div>
+<dd>Pandas dataframe containing the four mu values for each</dd>
+</dl>
+<p>porosity.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -263,9 +272,13 @@ normalized porosity level μ.</p>
 <pre><code class="python">def compute_indicators_porosity_level(df, vol_layer):
     &#34;&#34;&#34;Function to compute a porosity severity score based on the four metrics :
 
+
     1 - Frequency of occurrence or number of discrete pores in a layer.
+    
     2 - The proportion of volume in a layer affected by porosity mu2.
+    
     3 - The average distance between a pair of pores mu3.
+    
     4 - The above three metrics are combined into a single metric called the
     normalized porosity level μ.
 
@@ -274,7 +287,8 @@ normalized porosity level μ.</p>
         vol_layer (float): The volume of part layer.
 
     Returns:
-        Dataframe : Pandas dataframe containing the four mu values for each porosity.
+        Dataframe : Pandas dataframe containing the four mu values for each
+        porosity.
 
     &#34;&#34;&#34;
     # occurrence frequency
@@ -326,8 +340,8 @@ normalized porosity level μ.</p>
 <dd>
 <div class="desc"><p>Script Function to automate the labeling process using ImageJ plugin.
 It takes in the paths of local ImageJ installation which must include the plugin
-and of input data in form of Tiff image stack.
-The user must also specify the paths for the output which includes processed
+and of input data in form of Tif image stack.</p>
+<p>The user must also specify the paths for the output which includes processed
 images and defect data in form of csv.</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -347,7 +361,8 @@ images and defect data in form of csv.</p>
 <pre><code class="python">def label(IMAGEJ_PATH, IN_DIR, OUT_DIR, TOMO_LABELS_PATH):
     &#34;&#34;&#34;Script Function to automate the labeling process using ImageJ plugin.
     It takes in the paths of local ImageJ installation which must include the plugin
-    and of input data in form of Tiff image stack.
+    and of input data in form of Tif image stack.
+    
     The user must also specify the paths for the output which includes processed
     images and defect data in form of csv.
 
