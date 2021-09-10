@@ -115,6 +115,22 @@ def dist(df):
 
 
 def compute_indicators_porosity_level(df, vol_layer):
+    """Function to compute a porosity severity score based on the four metrics :
+
+    1 - Frequency of occurrence or number of discrete pores in a layer.
+    2 - The proportion of volume in a layer affected by porosity mu2.
+    3 - The average distance between a pair of pores mu3.
+    4 - The above three metrics are combined into a single metric called the
+    normalized porosity level μ.
+
+    Args:
+        df (Dataframe): The path of ImageJ installation.
+        vol_layer (float): The volume of part layer.
+
+    Returns:
+        Dataframe : Pandas dataframe containing the four mu values for each porosity.
+
+    """
     # occurrence frequency
     mu1 = pd.DataFrame(df.pivot_table(index=['numLayer'], aggfunc='size')
                       ).rename(columns={0: 'mu1'})
